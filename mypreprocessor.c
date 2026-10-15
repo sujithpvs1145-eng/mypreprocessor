@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include"operation.h"
-char str[100];
+char op_file[100];
 int len;
 int main(int argc, char *argv[])
 {
@@ -21,14 +21,14 @@ int main(int argc, char *argv[])
 	    printf("error in src\n");
 	    exit(0);
     }
-    strcpy(str,argv[1]);
-    len=strlen(str)-1;
-    memset(str+len,'i',1);
-    dest = fopen(str, "w");
+    strcpy(op_file,argv[1]);
+    len=strlen(op_file)-1;
+    memset(op_file+len,'i',1);
+    dest = fopen(op_file, "w");
     comment_remove(src,dest);
     fclose(dest);
     fclose(src);
-    marcohandling(str);
-    fileinclusion(str);
+    macro_handling(op_file);
+    insert_header(op_file);
 
 }
