@@ -1,135 +1,136 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-int t=0;
-int c=0;
+int line_cnt=0;
+int macro_cnt=0;
 
 int check(char*p,char*line,int nlen);
 typedef struct marc
 {
-	char name[30];
-	char val[20];
+        char name[30];
+        char val[20];
 }marc;
-void marcohandling(char*name)
+void marcohandling(char*filename)
 {
-	marc marco[100];
-	FILE*src=NULL;
-	char str[100];
-	int i,j=0,nlen,vlen,k;
-	char mname[10],mval[10];
-	char(*line)[100]=NULL;
-	src=fopen(name,"r");
-	if(src==NULL)
-	{
-		printf("error in marco\n");
-		exit(0);
-	}
-	while(fgets(str,100,src)!=NULL)
-	{
-		line=realloc(line,(t+1)*sizeof(*line));
-		strcpy(line[t],str);
-		t++;
-	}
-	fclose(src);
-	for(i=0;i<t;i++)
-	{
-		if(strstr(line[i],"#define")!=NULL)
-		{
-			printf("found \n");
-		j=0;
-		k=0;
-		while((line[i][j]!=' ')&&(line[i][j]!='\0'))
-		{
-			j++;
-		}
-		j++;
-		while((line[i][j]!=' ')&&(line[i][j]!='\0'))
-		{
-			mname[k]=line[i][j];
-			j++;
-			k++;
-		}
-		mname[k]='\0';
-		k=0;
-		while(line[i][j]==' ')
-		{
-		j++;
-		}
-		while((line[i][j]!='\n')&&(line[i][j]!='\0'))
-		{
-			mval[k]=line[i][j];
-			k++;
-			j++;
-		}
-		mval[k]='\0';
-		strcpy(marco[c].name,mname);
-		strcpy(marco[c].val,mval);
-		c++;
-		}
-		i++;
-		for(j=0;j<c;j++)
-		{
-			char*p=strstr(line[i],marco[j].name);
-			while(p!=NULL)
-			{
-				if(p!=NULL)
-				{
-					vlen=strlen(marco[j].val);
-					nlen=strlen(marco[j].name);
-					if(check(p,line[i],nlen))
-					{
-					memmove(p+vlen,p+nlen,strlen(p+nlen)+1);
-					memcpy(p,marco[j].val,vlen);
-				}
-				}
-				p=strstr(p+nlen,marco[j].name);
-			}
-		}
-		i--;
-	}
-	src=fopen(name,"w");
-	if(src==NULL)
-	{
-		printf("error in marco w\n");
-		exit(0);
-	}
-	for(i=0;i<t;i++)
-	{
-		if(strstr(line[i],"#define")!=NULL)
-		{
-			continue;
-		}
-		fputs(line[i],src);
-	}
-	fclose(src);
+        marc macro[100];
+        FILE*src=NULL;
+        char line_buffer[100];
+        int i,j=0,nlen,vlen,k;
+        char mname[10],mval[10];
+        char(*line)[100]=NULL;
+        src=fopen(filename,"r");
+        if(src==NULL)
+        {
+                printf("error in marco\n");
+                exit(0);
+        }
+        while(fgets(line_buffer,100,src)!=NULL)
+        {
+                line=realloc(line,(t+1)*sizeof(*line));
+                strcpy(line[t],line_buffer);
+                line_cnt++;
+        }
+        fclose(src);
+        for(i=0;i<t;i++)
+        {
+                if(strstr(line[i],"#define")!=NULL)
+                {
+                        printf("found \n");
+                j=0;
+                k=0;
+                while((line[i][j]!=' ')&&(line[i][j]!='\0'))
+                {
+                        j++;
+                }
+                j++;
+                while((line[i][j]!=' ')&&(line[i][j]!='\0'))
+                {
+                        mname[k]=line[i][j];
+                        j++;
+                        k++;
+                }
+                mname[k]='\0';
+                k=0;
+                while(line[i][j]==' ')
+                {
+                j++;
+                }
+                while((line[i][j]!='\n')&&(line[i][j]!='\0'))
+                {
+                        mval[k]=line[i][j];
+                        k++;
+                        j++;
+                }
+                mval[k]='\0';
+                strcpy(macro[macro_cnt].name,mname);
+                strcpy(macro[macro_cnt].val,mval);
+                macro_cnt++:
+                }
+                i++;
+                for(j=0;j<c;j++)
+                {
+                        char*p=strstr(line[i],marco[j].name);
+                        while(p!=NULL)
+                        {
+                                if(p!=NULL)
+                                {
+                                        vlen=strlen(marco[j].val);
+                                        nlen=strlen(marco[j].name);
+                                        if(check(p,line[i],nlen))
+                                        {
+                                        memmove(p+vlen,p+nlen,strlen(p+nlen)+1);
+                                        memcpy(p,marco[j].val,vlen);
+                                }
+                                }
+                                p=strstr(p+nlen,marco[j].name);
+                        }
+                }
+                i--;
+        }
+        src=fopen(filename,"w");
+        if(src==NULL)
+        {
+                printf("error in marco w\n");
+                exit(0);
+        }
+        for(i=0;i<t;i++)
+        {
+                if(strstr(line[i],"#define")!=NULL)
+                {
+                        continue;
+                }
+                fputs(line[i],src);
+        }
+        fclose(src);
 }
-					
+
 int check(char*p,char*line,int nlen)
 {
-	if(p!=line)
-	{
-		 if ((p[-1] >= 'a' && p[-1] <= 'z') ||
+        if(p!=line)
+        {
+                 if ((p[-1] >= 'a' && p[-1] <= 'z') ||
             (p[-1] >= 'A' && p[-1] <= 'Z'))
             return 0;
-	}
-	if ((p[nlen] >= 'a' && p[nlen] <= 'z') ||
+        }
+        if ((p[nlen] >= 'a' && p[nlen] <= 'z') ||
         (p[nlen] >= 'A' && p[nlen] <= 'Z'))
         return 0;
-	int quote = 0;
+        int quote = 0;
 
-	for (int i = 0; line[i] != '\0'; i++)
-	{
-    	if (line[i]==*p)
-    	{
+        for (int i = 0; line[i] != '\0'; i++)
+        {
+        if (line[i]==*p)
+        {
         if (quote == 1)
             return 0;
         else
             return 1;
-	}
+        }
 
-    	if (line[i] == '"')
-		quote = !quote;
-	}
+        if (line[i] == '"')
+                quote = !quote;
+        }
 
-    	return 1;
+        return 1;
 }
+                                                                                                    
