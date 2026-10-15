@@ -1,5 +1,5 @@
-mypreprocessor: mypreprocessor.o comment.o file.o marco.o
-	gcc mypreprocessor.o comment.o file.o marco.o -o mypreprocessor
+mypreprocessor: mypreprocessor.o comment.o file.o macro.o
+	gcc mypreprocessor.o comment.o file.o macro.o -o mypreprocessor
 
 mypreprocessor.o: mypreprocessor.c operation.h
 	gcc -c mypreprocessor.c
@@ -9,8 +9,8 @@ comment.o: comment.c operation.h
 
 file.o: file.c operation.h
 	gcc -c file.c
-marco.o:marco.c operation.h
-	gcc -c marco.c
+macro.o:macro.c operation.h
+	gcc -c macro.c
 
 
 clean:
