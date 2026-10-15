@@ -12,7 +12,7 @@ void *read_file(char*line,FILE*src)
 	return fgets(line,100,src);
 }
 
-void write_file(char ch,FILE*dest)
+void write_to_file(char ch,FILE*dest)
 {
 	fputc(ch,dest);
 }
@@ -21,56 +21,7 @@ void comment_remove(FILE*src,FILE*dest)
 {
 	P("inside function\n");
 	char line[100];
-	int i,flag=0,multi=0,newline=0;
-	/*while(read_file(line,src))
-	{   
-		P("inside while\n");
-		for(i=0;line[i]!='\0';i++)
-		{
-			if(flag==1)
-			{
-				P("flag is 1\n");
-			if(line[i]=='"')
-			{
-				P("flag is 0\n");
-				flag=0;
-				write_file(line[i],dest);
-			}
-			}
-			else if(flag==0)
-			{
-				P("flag is 0\n");
-				if(line[i]=='"')
-				{
-					flag=1;
-					P("flag is 1\n");
-				}
-				write_file(line[i],dest);
-			}
-			else if((line[i]=='/')&&(line[i+1]=='*'))
-			{
-				multi=1;
-				i++;
-			}
-			else if(multi==1)
-			{
-			 if((line[i]=='*')&&(line[i+1]=='/'))
-			{
-				multi=0;
-				i++;
-			}
-			}
-			else if((line[i]=='/') && (line[i+1] =='/') &&(flag==0))
-			{
-				break;
-			}
-			else
-			{
-				write_file(line[i],dest);
-			}
-				
-	}
-	}*/
+	int i,flag=0,multi=0,newline=0;	
 	while(read_file(line,src))
 {
     P("inside while");
@@ -88,7 +39,7 @@ void comment_remove(FILE*src,FILE*dest)
             }
 	    else if(line[i]=='\n')
 	    {
-		    write_file('\n',dest);
+		    write_to_file('\n',dest);
 	    }
 	    else if(line[i]==EOF)
 	    {
@@ -99,7 +50,7 @@ void comment_remove(FILE*src,FILE*dest)
         {
             P("inside string");
 
-            write_file(line[i],dest);
+            write_to_file(line[i],dest);
 
             if(line[i]=='"')
             {
@@ -113,7 +64,7 @@ void comment_remove(FILE*src,FILE*dest)
             if(line[i]=='"')
             {
                 flag=1;
-                write_file(line[i],dest);
+                write_to_file(line[i],dest);
             }
             else if(line[i]=='/' && line[i+1]=='/')
             {
@@ -123,7 +74,7 @@ void comment_remove(FILE*src,FILE*dest)
 		    }
 		    if((line[i]=='\n'))
 		    {
-			    write_file('\n',dest);
+			    write_to_file('\n',dest);
 		   }
                 break;
             }
@@ -136,11 +87,11 @@ void comment_remove(FILE*src,FILE*dest)
 		    if(line[i]=='\n')
 		    {
 			   
-				    write_file(line[i],dest);
+				    write_to_file(line[i],dest);
 		    }
            	 else
             {
-                write_file(line[i],dest);
+                write_to_file(line[i],dest);
             }
         }
     }
