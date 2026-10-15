@@ -19,7 +19,7 @@ A C project that implements basic preprocessing operations on C source files.
 - mypreprocessor.c - Main program
 - comment.c - Comment handling
 - file.c - Header file inclusion
-- marco.c - Macro handling
+- macro.c - Macro handling
 - operation.h - Function declarations
 - myheader.h - Project header file
 - data.c - Test input
